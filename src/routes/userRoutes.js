@@ -5,7 +5,10 @@ const UserController = require("../controllers/UserController");
 
 router.get("/users", UserController.getAllUsers);
 router.post("/csAccount", UserController.postUserData);
-router.post("/cstemp", UserController.postUserDataTemp);
+router.post("/csCourses", UserController.postCourse);
+router.get("/getCourses", UserController.getAllCourses);
+router.post("/ciAccount", UserController.postInstructor);
+router.post("/cTimeTable", UserController.postTimeTable);
 
 // other user routes...
 
