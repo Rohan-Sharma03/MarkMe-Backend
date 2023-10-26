@@ -1,50 +1,71 @@
-CREATE TABLE Students (
+CREATE TABLE students (
   student_id VARCHAR(50) PRIMARY KEY,
-  full_name VARCHAR(150) NOT NULL,
+  student_name VARCHAR(150) NOT NULL,
   email VARCHAR(150) UNIQUE,
-  roll_number VARCHAR(20) UNIQUE,
-  phone_number VARCHAR(20),
-  password VARCHAR(255) NOT NULL,
-  course_opted VARCHAR(50)[],
+  contact_number VARCHAR(20),
+  class VARCHAR(20),
   section VARCHAR(1)
 );
 
-CREATE TABLE Courses (
+CREATE TABLE course (
   course_id VARCHAR(50) PRIMARY KEY,
   course_name VARCHAR(255) NOT NULL,
-  course_timing VARCHAR(50),
-  day VARCHAR(20),
-  start_time TIME,
-  end_time TIME,
-  venue VARCHAR(50),
-  course_message VARCHAR(256),
+  course_objective VARCHAR(256),
   instructor_id VARCHAR(50),
-  FOREIGN KEY (instructor_id) REFERENCES Instructors(instructor_id)
+  timetable_id VARCHAR(50),
+  FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
+  FOREIGN KEY (timetable_id) REFERENCES timetable(timetable_id)
 );
 
-CREATE TABLE Attendance (
-  attendance_id SERIAL PRIMARY KEY,
-  student_id VARCHAR(50),
-  time TIME,
-  date DATE,
-  course_id VARCHAR(50),
-  instructor_id VARCHAR(50),
-  FOREIGN KEY (student_id) REFERENCES Students(student_id),
-  FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+CREATE TABLE attendance (
+  student_id VARCHAR(50) NOT NULL,
+  course_id VARCHAR(50) NOT NULL,
+  accuracy INT NOT NULL, 
+  time_stamp TIMESTAMP,
+  date_attended DATE,
+  day_of_week DATE,
+  section VARCHAR(40) NOT NULL,
+  status CHAR(1) NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
-CREATE TABLE Instructors (
+CREATE TABLE instructor (
   instructor_id VARCHAR(50) PRIMARY KEY,
   instructor_name VARCHAR(150) NOT NULL,
+  instructor_email VARCHAR(150) NOT NULL,
   ongoing_course VARCHAR(50),
-  password VARCHAR(50) NOT NULL,
-  phone_number VARCHAR(20),
+  instructor_password VARCHAR(50) NOT NULL,
+  contact_number VARCHAR(20),
+  instructor_designation VARCHAR(20),
   office_status VARCHAR(20)
 );
 
-CREATE TABLE Timetable (
-  period_id SERIAL PRIMARY KEY,
-  course_id VARCHAR(50) [],
-  instructor_id VARCHAR(50),
-  FOREIGN KEY (instructor_id) REFERENCES Instructors(instructor_id)
+CREATE TABLE timetable (
+  timetable_id  VARCHAR(50) PRIMARY KEY,
+  period_type VARCHAR(50),
+  days_of_week DATE[],
+  start_time TIME[],
+  end_time TIME[],
+  venue VARCHAR(50)
+);
+
+CREATE TABLE enrollment (
+  student_id VARCHAR(50) NOT NULL,
+  course_id VARCHAR(50) NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  FOREIGN KEY (course_id) REFERENCES course(course_id)
+);
+
+CREATE TABLE association (
+  student_id VARCHAR(50) NOT NULL,
+  timetable_id VARCHAR(50) NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES student(student_id),
+  FOREIGN KEY (timetable_id) REFERENCES timetable(timetable_id)
+);
+
+CREATE TABLE people (
+  people_id VARCHAR(50) PRIMARY KEY NOT NULL,
+  people_password VARCHAR(50) NOT NULL,
+  login_time TIME
 );
