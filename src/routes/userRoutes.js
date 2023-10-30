@@ -9,6 +9,8 @@ router.post("/csCourses", UserController.postCourse);
 router.get("/getCourses", UserController.getAllCourses);
 router.post("/ciAccount", UserController.postInstructor);
 router.post("/cTimeTable", UserController.postTimeTable);
+router.post("/studentData", UserController.getStudentData);
+router.get("/:course_id/getTimeTable", UserController.getTimeTable);
 
 // other user routes...
 
