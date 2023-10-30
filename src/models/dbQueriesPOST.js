@@ -198,6 +198,28 @@ const dbQueriesPOST = {
       return { success: false, message: "Failed to create timetable" };
     }
   },
+
+  async getStudentData(data) {
+    const query = `SELECT * FROM students WHERE student_id='${data}'`;
+    try {
+      const student = await dbService.query(query);
+      console.log("STUDENT DATA", student);
+      if (student) {
+        return {
+          status: 200,
+          success: true,
+          message: "Data retrieved successfully",
+          data: student[0], // Assuming the 'student' variable contains the fetched data
+        };
+      } else {
+        console.log("Data unavailable");
+        return { success: false, message: "Failed to get data" };
+      }
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+      return { success: false, message: "Failed to fetch student data" };
+    }
+  },
 };
 
 module.exports = dbQueriesPOST;
