@@ -24,6 +24,29 @@ const UserController = {
     }
   },
 
+  async getStudentData(req, res) {
+    const { data } = req.body;
+    try {
+      const student = await dbQueriesPOST.getStudentData(data);
+      res.json(student);
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
+  async getTimeTable(req, res) {
+    const { course_id } = req.params;
+    console.log("The course id is ", course_id);
+    try {
+      const timetable = await dbQueriesGET.getTimeTable(
+        course_id.toUpperCase()
+      );
+      res.json(timetable);
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
   async postUserDataTemp(req, res) {
     const { name, email } = req.body;
     console.log("dbQueriesGET controller", req.body);
