@@ -53,8 +53,28 @@ const dbQueriesGET = {
       return { success: false, message: "Failed to fetch timetable data" };
     }
   },
+  async getNotification(course_id) {
+    try {
+      console.log("get Notificaitom in db quereis ", course_id);
+      const query = `SELECT * FROM notification WHERE course_id ILIKE '${course_id}'`;
 
-  // other model methods...
+      const newNotifications = await dbService.query(query);
+      console.log("The notifications are ", newNotifications);
+      if (newNotifications) {
+        return {
+          status: 200,
+          success: true,
+          message: "Notification retrived sucessfully",
+          data: newNotifications,
+        };
+      } else {
+        console.log("Data unavailable");
+        return { success: false, message: "Failed to get data" };
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 
 module.exports = dbQueriesGET;
