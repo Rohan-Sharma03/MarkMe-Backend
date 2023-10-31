@@ -220,6 +220,40 @@ const dbQueriesPOST = {
       return { success: false, message: "Failed to fetch student data" };
     }
   },
+
+  async createNotification(instructor_id, course_id, subject, message, date) {
+    console.log(
+      "THe date in db QUEIRES ",
+      instructor_id,
+      course_id,
+      subject,
+      message,
+      date
+    );
+    const query =
+      "INSERT INTO notification(instructor_id,course_id,subject,message,date) VALUES($1,$2,$3,$4,$5) RETURNING *";
+    const values = [instructor_id, course_id, subject, message, date];
+    try {
+      const newNotification = dbService.query(query, values);
+      if (newNotification) {
+        return {
+          status: 200,
+          success: true,
+          message: "Notification created successfully",
+          data: newNotification,
+        };
+      } else {
+        console.log("Data unavailable");
+        return {
+          success: false,
+          message: "failed created successfully",
+        };
+      }
+    } catch (err) {
+      console.error("Error creating notification:", err);
+      return { success: false, message: "Failed creating notificaion" };
+    }
+  },
 };
 
 module.exports = dbQueriesPOST;
