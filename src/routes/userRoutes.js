@@ -11,6 +11,8 @@ router.post("/ciAccount", UserController.postInstructor);
 router.post("/cTimeTable", UserController.postTimeTable);
 router.post("/studentData", UserController.getStudentData);
 router.get("/:course_id/getTimeTable", UserController.getTimeTable);
+router.post("/ciNotification", UserController.postNotification);
+router.post("/csNotification", UserController.getNotification);
 
 // other user routes...
 
