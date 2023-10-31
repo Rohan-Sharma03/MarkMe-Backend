@@ -47,6 +47,19 @@ const UserController = {
     }
   },
 
+  async getNotification(req, res) {
+    const { course_id } = req.body;
+    console.log("get notification", course_id);
+    try {
+      const notificaion = await dbQueriesGET.getNotification(
+        course_id.toUpperCase()
+      );
+      res.json(notificaion);
+    } catch (err) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
   async postUserDataTemp(req, res) {
     const { name, email } = req.body;
     console.log("dbQueriesGET controller", req.body);
@@ -178,6 +191,30 @@ const UserController = {
         venue
       );
       res.json(newTimeTable);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+  async postNotification(req, res) {
+    const { instructor_id, course_id, subject, message, date } = req.body;
+    console.log(
+      "the data in user controller",
+      instructor_id,
+      course_id,
+      subject,
+      message,
+      date
+    );
+    try {
+      const newNotification = await dbQueriesPOST.createNotification(
+        instructor_id,
+        course_id,
+        subject,
+        message,
+        date
+      );
+      res.json(newNotification);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
