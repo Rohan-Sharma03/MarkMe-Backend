@@ -13,6 +13,7 @@ router.post("/studentData", UserController.getStudentData);
 router.get("/:course_id/getTimeTable", UserController.getTimeTable);
 router.post("/ciNotification", UserController.postNotification);
 router.post("/csNotification", UserController.getNotification);
+router.post("/csMarkAttendance", UserController.markAttendance);
 
 // other user routes...
 
