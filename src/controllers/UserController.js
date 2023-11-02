@@ -220,6 +220,47 @@ const UserController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
+  async markAttendance(req, res) {
+    const {
+      student_id,
+      course_id,
+      accuracy,
+      time_stamp,
+      date_of_attendance,
+      day_of_week,
+      section,
+      status,
+    } = req.body;
+
+    console.log(
+      "this is attendance marking : ",
+      student_id,
+      course_id,
+      accuracy,
+      time_stamp,
+      date_of_attendance,
+      day_of_week,
+      section,
+      status
+    );
+    try {
+      const marked = dbQueriesPOST.markAttendance(
+        student_id,
+        course_id,
+        accuracy,
+        time_stamp,
+        date_of_attendance,
+        day_of_week,
+        section,
+        status
+      );
+      res.json(marked);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = UserController;
