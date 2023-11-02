@@ -254,6 +254,48 @@ const dbQueriesPOST = {
       return { success: false, message: "Failed creating notificaion" };
     }
   },
+  async markAttendance(
+    student_id,
+    course_id,
+    accuracy,
+    time_stamp,
+    date_of_attendance,
+    day_of_week,
+    section,
+    status
+  ) {
+    try {
+      const query =
+        "INSERT INTO attendance(student_id,course_id,accuracy,time_stamp,date_attended,day_of_week,section,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *";
+      const values = [
+        student_id,
+        course_id,
+        accuracy,
+        time_stamp,
+        date_of_attendance,
+        day_of_week,
+        section,
+        status,
+      ];
+      const marked = dbService.query(query, values);
+      if (marked) {
+        return {
+          success: true,
+          message: "Attendance marked successfully",
+          data: marked,
+        };
+      } else {
+        console.log("Data not available");
+        return {
+          sucess: false,
+          message: "Attendace not marked sucessfully",
+        };
+      }
+    } catch (err) {
+      console.log(err);
+      return { success: false, message: "Failed marking attendance" };
+    }
+  },
 };
 
 module.exports = dbQueriesPOST;
