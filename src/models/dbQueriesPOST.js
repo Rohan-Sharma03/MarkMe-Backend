@@ -280,6 +280,16 @@ const dbQueriesPOST = {
     section,
     status
   ) {
+    console.log("attendance data recived : ", {
+      student_id,
+      course_id,
+      accuracy,
+      time_stamp,
+      date_of_attendance,
+      day_of_week,
+      section,
+      status,
+    });
     try {
       const query =
         "INSERT INTO attendance(student_id,course_id,accuracy,time_stamp,date_attended,day_of_week,section,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *";
@@ -320,7 +330,7 @@ const dbQueriesPOST = {
       const signIn = await dbService.query(query, values);
       if (signIn) {
         return {
-          status: 201,
+          statuss: 201,
           success: true,
           message: "Sign in successful",
           data: signIn,
@@ -505,9 +515,28 @@ const dbQueriesPOST = {
     }
   },
   async postStudentGetEnrollment(course_id, student_id) {
-    const query = `INSERT INTO enrollment(course_id, student_id) VALUES ($1, $2) RETURNING *`;
-    const values = [course_id, student_id];
+    const checkExistingQuery = `SELECT * FROM enrollment WHERE course_id = $1 AND student_id = $2`;
+    const checkExistingValues = [course_id, student_id];
+
     try {
+      // Check if the student is already enrolled
+      const existingEnrollment = await dbService.query(
+        checkExistingQuery,
+        checkExistingValues
+      );
+
+      if (existingEnrollment && existingEnrollment.length > 0) {
+        return {
+          status: 400,
+          success: false,
+          message: "Student is already enrolled in this course",
+        };
+      }
+
+      // If not enrolled, insert the enrollment record
+      const query = `INSERT INTO enrollment(course_id, student_id) VALUES ($1, $2) RETURNING *`;
+      const values = [course_id, student_id];
+
       const accepted = await dbService.query(query, values);
       if (accepted) {
         return {
@@ -532,7 +561,6 @@ const dbQueriesPOST = {
       };
     }
   },
-
   async getInstructorcourse(instructor_id) {
     const query = `SELECT * FROM course WHERE instructor_id = $1`;
     const values = [instructor_id];

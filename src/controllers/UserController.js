@@ -239,7 +239,7 @@ const UserController = {
       "this is attendance marking : ",
       student_id,
       course_id,
-      accuracy,
+      parseInt(accuracy),
       time_stamp,
       date_of_attendance,
       day_of_week,
@@ -250,7 +250,7 @@ const UserController = {
       const marked = await dbQueriesPOST.markAttendance(
         student_id,
         course_id,
-        accuracy,
+        parseInt(accuracy),
         time_stamp,
         date_of_attendance,
         day_of_week,
@@ -358,7 +358,7 @@ const UserController = {
       );
       res.json(accepted);
     } catch (err) {
-      console.log(err); 
+      console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
@@ -373,19 +373,20 @@ const UserController = {
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
     }
-
   },
 
-  async getEnrolledStudents(req,res){
-    const {course_id} = req.body;
-    try{
-      const enrolledStudents = await dbQueriesPOST.getEnrolledStudents(course_id);
+  async getEnrolledStudents(req, res) {
+    const { course_id } = req.body;
+    try {
+      const enrolledStudents = await dbQueriesPOST.getEnrolledStudents(
+        course_id
+      );
       res.json(enrolledStudents);
-    }catch(err){
+    } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal Server Error" });
     }
-  }
+  },
 };
 
 module.exports = UserController;
